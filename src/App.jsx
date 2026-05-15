@@ -8,7 +8,7 @@ import Membership from './components/Membership';
 import Impact from './components/Impact';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import StickyJoinBtn from './components/StickyJoinBtn';
+import FloatingButtons from './components/FloatingButtons';
 
 function App() {
   return (
@@ -24,7 +24,7 @@ function App() {
         <Contact />
       </main>
       <Footer />
-      <StickyJoinBtn />
+      <FloatingButtons />
     </div>
   );
 }

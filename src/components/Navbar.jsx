@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
+import logoImg from '../assets/logo.png';
 
 const links = [
   { label: 'Programs', href: '#programs' },
@@ -37,16 +38,8 @@ export default function Navbar() {
       >
         <div className="flex items-center justify-between px-5 py-4 max-w-7xl mx-auto">
           {/* Logo */}
-          <div className="flex items-center gap-2">
-            <span className="text-[#ff1a1a] text-2xl">⬡</span>
-            <div>
-              <span className="font-bebas tracking-widest text-lg leading-none block">
-                GETFIT
-              </span>
-              <span className="text-[#ff1a1a] text-[10px] font-barlow tracking-[0.3em] font-semibold leading-none">
-                ACADEMY
-              </span>
-            </div>
+          <div className="flex items-center">
+            <img src={logoImg} alt="Getfit Academy Logo" className="h-10 md:h-12 w-auto object-contain" />
           </div>
 
           {/* Desktop links */}

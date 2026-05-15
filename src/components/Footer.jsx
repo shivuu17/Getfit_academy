@@ -43,6 +43,8 @@ const links = [
   ['Contact', '#contact'],
 ];
 
+import logoImg from '../assets/logo.png';
+
 export default function Footer() {
   const scrollTo = (href) =>
     document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
@@ -54,14 +56,8 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-10 mb-10">
           {/* Brand */}
           <div className="flex-shrink-0">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-[#ff1a1a] text-2xl">⬡</span>
-              <div>
-                <span className="font-bebas tracking-widest text-xl leading-none block">GETFIT</span>
-                <span className="text-[#ff1a1a] text-[10px] font-barlow tracking-[0.3em] font-semibold">
-                  ACADEMY
-                </span>
-              </div>
+            <div className="mb-4">
+              <img src={logoImg} alt="Getfit Academy Logo" className="h-14 md:h-16 w-auto object-contain" />
             </div>
             <p className="font-inter text-xs text-gray-600 max-w-[200px] leading-relaxed">
               Noida's premier MMA & combat sports training facility.
