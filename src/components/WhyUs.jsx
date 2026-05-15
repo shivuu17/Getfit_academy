@@ -72,12 +72,12 @@ export default function WhyUs() {
           <div className="flex items-center gap-3 mb-3">
             <div className="h-px flex-1 bg-gradient-to-r from-[#ff1a1a]/40 to-transparent" />
             <span className="font-barlow font-semibold tracking-[0.3em] text-[#ff1a1a] text-xs uppercase">
-              The Antigravity Edge
+              The Getfit Edge
             </span>
             <div className="h-px flex-1 bg-gradient-to-l from-[#ff1a1a]/40 to-transparent" />
           </div>
           <h2 className="font-bebas text-[clamp(2.8rem,10vw,5rem)] tracking-wide text-white text-center leading-none">
-            WHY <span className="text-[#ff1a1a]">ANTIGRAVITY</span>
+            WHY <span className="text-[#ff1a1a]">GETFIT ACADEMY</span>
           </h2>
           <p className="text-center text-gray-400 text-sm font-inter mt-3 max-w-md mx-auto">
             We don't run a fitness class. We build fighters.

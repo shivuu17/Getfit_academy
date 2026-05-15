@@ -12,9 +12,9 @@ export default function Contact() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const msg = encodeURIComponent(
-      `Hi! I'm ${form.name}. I want to join Antigravity Fight Club for ${form.program}. My number is ${form.phone}.`
+      `Hi! I'm ${form.name}. I want to join Getfit Academy for ${form.program}. My number is ${form.phone}.`
     );
-    window.open(`https://wa.me/919999999999?text=${msg}`, '_blank');
+    window.open(`https://wa.me/918506889718?text=${msg}`, '_blank');
     setSubmitted(true);
   };
 
@@ -148,24 +148,24 @@ export default function Contact() {
               {
                 icon: <MapPin size={20} className="text-[#ff1a1a]" />,
                 label: 'Location',
-                val: 'Andheri West, Mumbai — Near D-Mart',
+                val: 'H85Q+HX9 Mannat bliss pg sector 44 chalera, Gali Number 3, Chhalera Bangar, Sector 44, Noida, UP 201303',
               },
               {
                 icon: <Clock size={20} className="text-[#ff1a1a]" />,
                 label: 'Hours',
-                val: 'Mon–Sat: 5AM–10PM  |  Sunday: 6AM–2PM',
+                val: 'Open until 8:30 PM',
               },
               {
                 icon: <Phone size={20} className="text-[#ff1a1a]" />,
                 label: 'Call Us',
-                val: '+91 99999 99999',
-                href: 'tel:+919999999999',
+                val: '+91 85068 89718',
+                href: 'tel:+918506889718',
               },
               {
                 icon: <MessageCircle size={20} className="text-[#ff1a1a]" />,
                 label: 'WhatsApp',
                 val: 'Message us instantly',
-                href: 'https://wa.me/919999999999',
+                href: 'https://wa.me/918506889718',
               },
             ].map((info, i) => (
               <motion.a
@@ -194,6 +194,26 @@ export default function Contact() {
             ))}
           </motion.div>
         </div>
+
+        {/* Map Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mt-10 border border-white/5 bg-[#0d0d0d] p-3"
+        >
+          <iframe
+            title="Getfit Academy Location"
+            width="100%"
+            height="350"
+            style={{ border: 0, filter: 'invert(90%) hue-rotate(180deg) brightness(85%) contrast(85%)' }}
+            loading="lazy"
+            allowFullScreen
+            referrerPolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d438.0450490248132!2d77.33982498292858!3d28.55893878913356!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce7bd1ecef689%3A0xd53d7090a2afbb94!2sGetfit%20Academy-%20Building%20a%20professional%20fighting%20crew%20with%20Boxing%20%7C%20MMA%20%7C%20Kickboxing%20%7C%20Fitness%20%7C%20Wrestling!5e0!3m2!1sen!2sin!4v1778829912998!5m2!1sen!2sin"
+          />
+        </motion.div>
       </div>
     </section>
   );

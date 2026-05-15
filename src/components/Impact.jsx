@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import impactBg from '../assets/impact_bg.png';
+import impactBg from '../assets/impact_bg.webp';
 
 export default function Impact() {
   const ref = useRef(null);

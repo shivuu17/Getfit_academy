@@ -57,14 +57,14 @@ export default function Footer() {
             <div className="flex items-center gap-2 mb-3">
               <span className="text-[#ff1a1a] text-2xl">⬡</span>
               <div>
-                <span className="font-bebas tracking-widest text-xl leading-none block">ANTIGRAVITY</span>
+                <span className="font-bebas tracking-widest text-xl leading-none block">GETFIT</span>
                 <span className="text-[#ff1a1a] text-[10px] font-barlow tracking-[0.3em] font-semibold">
-                  FIGHT CLUB
+                  ACADEMY
                 </span>
               </div>
             </div>
             <p className="font-inter text-xs text-gray-600 max-w-[200px] leading-relaxed">
-              Mumbai's premier MMA & combat sports training facility.
+              Noida's premier MMA & combat sports training facility.
             </p>
           </div>
 
@@ -115,8 +115,8 @@ export default function Footer() {
 
         {/* Bottom */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-gray-600 font-inter">
-          <span>© 2025 Antigravity Fight Club. All rights reserved.</span>
-          <span>Built with 🥊 in Mumbai</span>
+          <span>© 2025 Getfit Academy. All rights reserved.</span>
+          <span>Built with 🥊 in Noida</span>
         </div>
       </div>
     </footer>

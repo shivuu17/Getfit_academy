@@ -41,10 +41,10 @@ export default function Navbar() {
             <span className="text-[#ff1a1a] text-2xl">⬡</span>
             <div>
               <span className="font-bebas tracking-widest text-lg leading-none block">
-                ANTIGRAVITY
+                GETFIT
               </span>
               <span className="text-[#ff1a1a] text-[10px] font-barlow tracking-[0.3em] font-semibold leading-none">
-                FIGHT CLUB
+                ACADEMY
               </span>
             </div>
           </div>

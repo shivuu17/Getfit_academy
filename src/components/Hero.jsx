@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import heroImg from '../assets/hero_fighter.png';
+import heroImg from '../assets/hero_fighter.webp';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -43,7 +43,7 @@ export default function Hero() {
         >
           <span className="w-1.5 h-1.5 rounded-full bg-[#ff1a1a] animate-pulse" />
           <span className="font-barlow font-semibold tracking-[0.25em] text-[11px] text-[#ff1a1a] uppercase">
-            Est. 2019 • Mumbai, India
+            Est. 2019 • Noida, UP
           </span>
         </motion.div>
 
@@ -68,7 +68,7 @@ export default function Hero() {
           animate="show"
           className="font-barlow font-semibold tracking-[0.3em] text-gray-300 text-sm mb-10 uppercase"
         >
-          MMA &nbsp;•&nbsp; BOXING &nbsp;•&nbsp; STREET COMBAT
+          MMA &nbsp;•&nbsp; BOXING &nbsp;•&nbsp; KICKBOXING &nbsp;•&nbsp; WRESTLING &nbsp;•&nbsp; FITNESS
         </motion.p>
 
         {/* CTA Buttons */}

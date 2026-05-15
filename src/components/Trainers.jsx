@@ -1,8 +1,8 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import trainer1 from '../assets/trainer_1.png';
-import trainer2 from '../assets/trainer_2.png';
-import trainer3 from '../assets/trainer_3.png';
+import trainer1 from '../assets/trainer_1.webp';
+import trainer2 from '../assets/trainer_2.webp';
+import trainer3 from '../assets/trainer_3.webp';
 
 const trainers = [
   {
@@ -46,6 +46,8 @@ function TrainerCard({ trainer, index }) {
         <img
           src={trainer.img}
           alt={trainer.name}
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
         />
         {/* Gradient overlay */}
