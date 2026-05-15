@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap');
+
+@import "tailwindcss";
+
+:root {
+  --red: #ff1a1a;
+  --red-dark: #cc0000;
+  --red-glow: rgba(255, 26, 26, 0.4);
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: #000;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: #000;
+  color: #fff;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Grain overlay texture */
+.grain-overlay::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 200px;
+}
+
+.font-bebas { font-family: 'Bebas Neue', sans-serif; }
+.font-barlow { font-family: 'Barlow Condensed', sans-serif; }
+
+/* Red glow button */
+.btn-red-glow {
+  box-shadow: 0 0 18px var(--red-glow), 0 0 40px rgba(255,26,26,0.2);
+  transition: box-shadow 0.3s ease, transform 0.1s ease;
+}
+.btn-red-glow:hover {
+  box-shadow: 0 0 28px var(--red-glow), 0 0 60px rgba(255,26,26,0.35);
+}
+.btn-red-glow:active {
+  transform: scale(0.96);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: #ff1a1a; border-radius: 2px; }
+
+/* Horizontal scroll snap */
+.snap-x-container {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  gap: 16px;
+  padding: 8px 20px 16px;
+}
+.snap-x-container::-webkit-scrollbar { display: none; }
+.snap-x-item {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+/* Pulse badge */
+@keyframes pulse-red {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,26,26,0.6); }
+  50% { box-shadow: 0 0 0 8px rgba(255,26,26,0); }
+}
+.pulse-red { animation: pulse-red 2s ease-in-out infinite; }
