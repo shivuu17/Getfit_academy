@@ -1,5 +1,5 @@
-import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useRef, useState } from 'react';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 
 const programs = [
   {
@@ -9,6 +9,7 @@ const programs = [
     sub: 'Sweet Science',
     desc: 'Master jabs, hooks, footwork and ring IQ with championship-level coaching.',
     tag: 'BEGINNER FRIENDLY',
+    details: ['Fundamentals of stance & footwork', 'Heavy bag & mitt training', 'Defensive head movement', 'Light technical sparring'],
   },
   {
     id: 'mma',
@@ -17,6 +18,7 @@ const programs = [
     sub: 'Mixed Martial Arts',
     desc: 'Complete fighting system combining striking, wrestling and ground game.',
     tag: 'MOST POPULAR',
+    details: ['Striking to takedown transitions', 'Ground and pound techniques', 'Submission grappling', 'Cage control strategies'],
   },
   {
     id: 'kickboxing',
@@ -25,6 +27,7 @@ const programs = [
     sub: 'Stand-Up Striking',
     desc: 'Explosive kicks, punches and combinations that condition your entire body.',
     tag: 'HIGH INTENSITY',
+    details: ['Dutch style kickboxing combinations', 'Muay Thai clinch work', 'Shin conditioning', 'High-intensity pad work'],
   },
   {
     id: 'street',
@@ -33,10 +36,11 @@ const programs = [
     sub: 'Self Defense',
     desc: 'Real-world situational fighting techniques for when it matters most.',
     tag: 'ADVANCED',
+    details: ['Defense against multiple attackers', 'Weapon disarmament basics', 'Situational awareness', 'Dirty boxing and survival tactics'],
   },
 ];
 
-function ProgramCard({ prog, index }) {
+function ProgramCard({ prog, index, onClick }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-60px' });
 
@@ -47,6 +51,7 @@ function ProgramCard({ prog, index }) {
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.55, delay: index * 0.12, ease: [0.25, 0.1, 0.25, 1] }}
       whileTap={{ scale: 0.98 }}
+      onClick={onClick}
       className="group relative bg-[#111] border border-white/5 p-6 cursor-pointer overflow-hidden
                  hover:border-[#ff1a1a]/40 transition-all duration-300"
       style={{
@@ -99,6 +104,14 @@ function ProgramCard({ prog, index }) {
 export default function Programs() {
   const titleRef = useRef(null);
   const titleInView = useInView(titleRef, { once: true });
+  const [selectedProg, setSelectedProg] = useState(null);
+
+  // Prevent background scrolling when modal is open
+  if (selectedProg && typeof window !== 'undefined') {
+    document.body.style.overflow = 'hidden';
+  } else if (typeof window !== 'undefined') {
+    document.body.style.overflow = 'unset';
+  }
 
   return (
     <section id="programs" className="py-20 px-5 max-w-7xl mx-auto">
@@ -125,9 +138,63 @@ export default function Programs() {
       {/* Cards grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {programs.map((prog, i) => (
-          <ProgramCard key={prog.id} prog={prog} index={i} />
+          <ProgramCard key={prog.id} prog={prog} index={i} onClick={() => setSelectedProg(prog)} />
         ))}
       </div>
+
+      {/* Modal Popup */}
+      <AnimatePresence>
+        {selectedProg && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedProg(null)}
+            className="fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-5 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-[#0d0d0d] border border-[#ff1a1a]/30 p-8 max-w-md w-full relative shadow-[0_0_50px_rgba(255,26,26,0.15)]"
+            >
+              <button
+                onClick={() => setSelectedProg(null)}
+                className="absolute top-4 right-4 text-gray-400 hover:text-white cursor-pointer"
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </button>
+              
+              <div className="text-5xl mb-4">{selectedProg.icon}</div>
+              <div className="font-barlow font-semibold text-[10px] tracking-[0.3em] text-[#ff1a1a] uppercase mb-1">
+                {selectedProg.sub}
+              </div>
+              <h3 className="font-bebas text-4xl tracking-wider text-white mb-4">{selectedProg.title}</h3>
+              <p className="font-inter text-gray-300 text-sm mb-6">{selectedProg.desc}</p>
+              
+              <div className="space-y-3 mb-8">
+                {selectedProg.details.map((d, i) => (
+                  <div key={i} className="flex items-start gap-3 text-sm font-inter text-gray-400">
+                    <span className="text-[#ff1a1a] flex-shrink-0 font-bold">✓</span>
+                    <span>{d}</span>
+                  </div>
+                ))}
+              </div>
+
+              <button
+                onClick={() => {
+                  setSelectedProg(null);
+                  document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="w-full bg-[#ff1a1a] text-white font-bebas tracking-[0.2em] text-lg py-3 hover:bg-[#cc0000] transition-colors cursor-pointer"
+              >
+                JOIN THIS PROGRAM
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

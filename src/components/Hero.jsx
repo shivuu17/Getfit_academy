@@ -32,17 +32,17 @@ export default function Hero() {
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#ff1a1a] to-transparent opacity-60" />
 
       {/* Content */}
-      <div className="relative z-10 text-center px-5 max-w-lg mx-auto pt-24 pb-32">
+      <div className="relative z-10 w-full max-w-lg lg:max-w-7xl mx-auto px-5 lg:px-12 pt-24 pb-32 lg:pt-40 flex flex-col items-center lg:items-start text-center lg:text-left">
         {/* Badge */}
         <motion.div
           custom={0}
           variants={fadeUp}
           initial="hidden"
           animate="show"
-          className="inline-flex items-center gap-2 border border-[#ff1a1a]/60 px-4 py-1.5 mb-6"
+          className="inline-flex items-center gap-2 border border-[#ff1a1a]/60 px-4 py-1.5 mb-6 lg:mb-8"
         >
           <span className="w-1.5 h-1.5 rounded-full bg-[#ff1a1a] animate-pulse" />
-          <span className="font-barlow font-semibold tracking-[0.25em] text-[11px] text-[#ff1a1a] uppercase">
+          <span className="font-barlow font-semibold tracking-[0.25em] text-[11px] lg:text-xs text-[#ff1a1a] uppercase">
             Est. 2019 • Noida, UP
           </span>
         </motion.div>
@@ -53,11 +53,19 @@ export default function Hero() {
           variants={fadeUp}
           initial="hidden"
           animate="show"
-          className="font-bebas text-[clamp(3.5rem,14vw,7rem)] leading-none tracking-wide text-white mb-4"
+          className="font-bebas text-[clamp(3.5rem,14vw,7rem)] lg:text-[7.5rem] leading-[0.9] lg:leading-[0.85] tracking-wide text-white mb-4 lg:mb-6"
         >
-          UNLEASH<br />
-          <span className="text-[#ff1a1a]">YOUR</span><br />
-          INNER<br />FIGHTER
+          {/* Mobile Text Stack */}
+          <span className="lg:hidden block">
+            UNLEASH<br />
+            <span className="text-[#ff1a1a]">YOUR</span><br />
+            INNER<br />FIGHTER
+          </span>
+          {/* Desktop Text Layout */}
+          <span className="hidden lg:block">
+            UNLEASH <span className="text-[#ff1a1a]">YOUR</span><br />
+            INNER FIGHTER
+          </span>
         </motion.h1>
 
         {/* Sub text */}
@@ -66,7 +74,7 @@ export default function Hero() {
           variants={fadeUp}
           initial="hidden"
           animate="show"
-          className="font-barlow font-semibold tracking-[0.3em] text-gray-300 text-sm mb-10 uppercase"
+          className="font-barlow font-semibold tracking-[0.3em] lg:tracking-[0.4em] text-gray-300 text-sm lg:text-base mb-10 lg:mb-12 uppercase max-w-xs sm:max-w-md lg:max-w-3xl"
         >
           MMA &nbsp;•&nbsp; BOXING &nbsp;•&nbsp; KICKBOXING &nbsp;•&nbsp; WRESTLING &nbsp;•&nbsp; FITNESS
         </motion.p>
@@ -77,7 +85,7 @@ export default function Hero() {
           variants={fadeUp}
           initial="hidden"
           animate="show"
-          className="flex flex-col sm:flex-row gap-4 justify-center"
+          className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start w-full sm:w-auto"
         >
           <motion.button
             id="hero-join-btn"
@@ -103,16 +111,16 @@ export default function Hero() {
           variants={fadeUp}
           initial="hidden"
           animate="show"
-          className="flex justify-center gap-10 mt-14 pt-8 border-t border-white/10"
+          className="flex justify-center lg:justify-start gap-10 lg:gap-16 mt-14 pt-8 border-t border-white/10 lg:w-[60%]"
         >
           {[
             { value: '500+', label: 'Members' },
             { value: '12+', label: 'Pro Trainers' },
             { value: '6', label: 'Years' },
           ].map((s) => (
-            <div key={s.label} className="text-center">
-              <div className="font-bebas text-3xl text-[#ff1a1a] leading-none">{s.value}</div>
-              <div className="font-barlow text-[11px] tracking-widest text-gray-400 uppercase mt-0.5">{s.label}</div>
+            <div key={s.label} className="text-center lg:text-left">
+              <div className="font-bebas text-3xl lg:text-4xl text-[#ff1a1a] leading-none">{s.value}</div>
+              <div className="font-barlow text-[11px] lg:text-xs tracking-widest text-gray-400 uppercase mt-1">{s.label}</div>
             </div>
           ))}
         </motion.div>
