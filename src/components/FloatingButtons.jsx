@@ -11,7 +11,7 @@ export default function FloatingButtons() {
   }, []);
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
-  const scrollToContact = () => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToContact = () => window.dispatchEvent(new Event('openJoinModal'));
 
   const waMsg = encodeURIComponent("Hi! I want to join Getfit Academy. I'd like to book a free trial.");
   const waUrl = `https://wa.me/918506889718?text=${waMsg}`;
@@ -36,17 +36,7 @@ export default function FloatingButtons() {
         )}
       </AnimatePresence>
 
-      {/* Join Now - Pill shape */}
-      <motion.button
-        whileTap={{ scale: 0.95 }}
-        onClick={scrollToContact}
-        className="flex items-center gap-2 bg-[#ff4a4a] text-white px-5 py-3.5 rounded-full shadow-[0_0_20px_rgba(255,74,74,0.3)] hover:bg-[#ff1a1a] transition-colors cursor-pointer"
-      >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-           <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-        </svg>
-        <span className="font-inter font-bold text-sm">Join Now</span>
-      </motion.button>
+      {/* Join Now pill removed per request */}
 
       {/* WhatsApp */}
       <motion.a

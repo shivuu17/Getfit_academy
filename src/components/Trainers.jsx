@@ -113,14 +113,14 @@ export default function Trainers() {
             <TrainerCard key={t.id} trainer={t} index={i} />
           ))}
           {/* "Book Session" card */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="snap-x-item w-[220px] border border-[#ff1a1a]/20 flex flex-col items-center justify-center
-                       gap-4 p-8 flex-shrink-0 hover:border-[#ff1a1a]/60 transition-all cursor-pointer group"
-            onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="snap-x-item w-[220px] border border-[#ff1a1a]/20 flex flex-col items-center justify-center
+                         gap-4 p-8 flex-shrink-0 hover:border-[#ff1a1a]/60 transition-all cursor-pointer group"
+              onClick={() => window.dispatchEvent(new Event('openJoinModal'))}
           >
             <div className="w-16 h-16 border-2 border-[#ff1a1a] flex items-center justify-center
                             group-hover:bg-[#ff1a1a] transition-colors duration-300">

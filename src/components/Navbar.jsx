@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Settings } from 'lucide-react';
 import logoImg from '../assets/logo.webp';
 
 const links = [
@@ -11,9 +11,10 @@ const links = [
   { label: 'Contact', href: '#contact' },
 ];
 
-export default function Navbar() {
+export default function Navbar({ onAdminClick, onJoinClick }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [showAdminHint, setShowAdminHint] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -62,11 +63,34 @@ export default function Navbar() {
               </button>
             ))}
             <button
-              onClick={() => handleNav('#contact')}
+              onClick={onJoinClick}
               className="btn-red-glow bg-[#ff1a1a] text-white font-barlow font-bold tracking-widest text-sm px-5 py-2.5 uppercase cursor-pointer"
             >
               Join Now
             </button>
+            
+            {/* Admin Button */}
+            <motion.button
+              onClick={onAdminClick}
+              onMouseEnter={() => setShowAdminHint(true)}
+              onMouseLeave={() => setShowAdminHint(false)}
+              className="relative p-2 text-gray-400 hover:text-white transition-colors"
+              title="Admin Panel (Ctrl+Shift+A)"
+            >
+              <Settings size={20} />
+              <AnimatePresence>
+                {showAdminHint && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 5 }}
+                    className="absolute top-full mt-2 right-0 bg-[#1a1a1a] border border-white/20 text-xs text-gray-300 px-3 py-1 rounded whitespace-nowrap"
+                  >
+                    Ctrl+Shift+A
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.button>
           </div>
 
           {/* Mobile hamburger */}
@@ -108,7 +132,10 @@ export default function Navbar() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: links.length * 0.07 }}
-              onClick={() => handleNav('#contact')}
+              onClick={() => {
+                onJoinClick();
+                setOpen(false);
+              }}
               className="btn-red-glow bg-[#ff1a1a] text-white font-bebas tracking-[0.3em] text-2xl px-10 py-4 mt-4 cursor-pointer"
             >
               JOIN NOW

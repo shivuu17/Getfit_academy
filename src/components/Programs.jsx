@@ -185,7 +185,7 @@ export default function Programs() {
               <button
                 onClick={() => {
                   setSelectedProg(null);
-                  document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+                  window.dispatchEvent(new Event('openJoinModal'));
                 }}
                 className="w-full bg-[#ff1a1a] text-white font-bebas tracking-[0.2em] text-lg py-3 hover:bg-[#cc0000] transition-colors cursor-pointer"
               >

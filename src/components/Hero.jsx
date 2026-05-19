@@ -90,7 +90,7 @@ export default function Hero() {
           <motion.button
             id="hero-join-btn"
             whileTap={{ scale: 0.95 }}
-            onClick={() => scrollTo('#contact')}
+            onClick={() => window.dispatchEvent(new Event('openJoinModal'))}
             className="btn-red-glow bg-[#ff1a1a] text-white font-bebas tracking-[0.25em] text-xl px-10 py-4 min-h-[52px] cursor-pointer"
           >
             JOIN NOW

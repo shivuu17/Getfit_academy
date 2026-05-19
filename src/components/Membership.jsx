@@ -4,53 +4,32 @@ import { Check } from 'lucide-react';
 
 const plans = [
   {
-    id: 'starter',
-    name: 'STARTER',
-    price: '999',
-    period: 'mo',
-    desc: 'Perfect for beginners entering the fight game.',
-    features: [
-      'Access to 1 program',
-      '2 sessions per week',
-      'Locker room access',
-      'Community access',
-    ],
-    highlight: false,
-    cta: 'Get Started',
+    id: 'male',
+    name: 'Male',
+    desc: 'Standard adult male membership.',
+    prices: { monthly: 4000, three: 9600, six: 16800, yearly: 24000 },
+    features: ['All classes access', 'Locker & shower', 'Community events'],
   },
   {
-    id: 'pro',
-    name: 'PRO FIGHTER',
-    price: '1,999',
-    period: 'mo',
-    desc: 'The complete fighter development package.',
-    features: [
-      'All 4 programs',
-      'Unlimited sessions',
-      'Personal trainer time',
-      'Nutrition guidance',
-      'Fight prep & sparring',
-      'Priority booking',
-    ],
-    highlight: true,
-    cta: 'Go Pro',
-    badge: 'MOST POPULAR',
+    id: 'female',
+    name: 'Female',
+    desc: 'Tailored programs for female athletes.',
+    prices: { monthly: 3500, three: 8400, six: 14700, yearly: 21000 },
+    features: ['Women-only sessions', 'Locker & shower', 'Nutrition tips'],
   },
   {
-    id: 'elite',
-    name: 'ELITE',
-    price: '3,499',
-    period: 'mo',
-    desc: 'For serious competitors chasing the title.',
-    features: [
-      'Everything in Pro',
-      '1-on-1 coaching (4x/mo)',
-      'Competition prep',
-      'Video analysis',
-      'Supplement kit included',
-    ],
-    highlight: false,
-    cta: 'Go Elite',
+    id: 'couple',
+    name: 'Couple',
+    desc: 'Bring a partner and save together.',
+    prices: { monthly: 6500, three: 15600, six: 27700, yearly: 39000 },
+    features: ['Partner discounts', 'Shared locker', 'Couples training plans'],
+  },
+  {
+    id: 'kids',
+    name: 'Kids',
+    desc: 'Youth classes focused on fundamentals.',
+    prices: { monthly: 3500, three: 8400, six: 14700, yearly: 21000 },
+    features: ['Age-appropriate classes', 'Safety-first coaching', 'Progress reports'],
   },
 ];
 
@@ -58,15 +37,17 @@ function PlanCard({ plan, index }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-60px' });
 
+  const fmt = (n) => n.toLocaleString('en-IN');
+
   return (
     <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 60 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: index * 0.15 }}
-      className={`relative p-7 flex flex-col
+      className={`relative p-5 sm:p-7 flex flex-col gap-3 min-h-[420px]
         ${plan.highlight
-          ? 'bg-[#111] border-2 border-[#ff1a1a] shadow-[0_0_40px_rgba(255,26,26,0.2)]'
+          ? 'bg-[#111] border-2 border-[#ff1a1a] shadow-[0_0_40px_rgba(255,26,26,0.12)]'
           : 'bg-[#0d0d0d] border border-white/8'
         }`}
     >
@@ -80,30 +61,43 @@ function PlanCard({ plan, index }) {
       )}
 
       {/* Plan name */}
-      <div className="font-barlow font-semibold text-[10px] tracking-[0.3em] text-[#ff1a1a] uppercase mb-1">
+      <div className="font-barlow font-semibold text-[11px] sm:text-[12px] tracking-[0.25em] text-[#ff1a1a] uppercase mb-1">
         {plan.name}
       </div>
 
-      {/* Price */}
-      <div className="flex items-end gap-1 mb-1">
-        <span className="font-barlow font-bold text-gray-400 text-lg mb-1">₹</span>
-        <span className="font-bebas text-6xl leading-none text-white">{plan.price}</span>
-        <span className="font-barlow text-gray-400 text-sm mb-2">/{plan.period}</span>
-      </div>
+      {/* Price matrix */}
+      <div className="mb-3">
+        <p className="font-inter text-[13px] sm:text-sm text-gray-400 mb-3 leading-relaxed">{plan.desc}</p>
+        <div className="grid grid-cols-2 gap-2 text-sm mb-4 sm:text-sm">
+          <div className="text-gray-400 text-xs sm:text-sm">Monthly</div>
+          <div className="text-white text-sm">₹{fmt(plan.prices.monthly)}</div>
 
-      <p className="font-inter text-xs text-gray-500 mb-6 leading-relaxed">{plan.desc}</p>
+          <div className="text-gray-400 text-xs sm:text-sm">3 Months</div>
+          <div className="text-white text-sm">₹{fmt(plan.prices.three)}</div>
+
+          <div className="text-gray-400 text-xs sm:text-sm">6 Months</div>
+          <div className="text-white text-sm">₹{fmt(plan.prices.six)}</div>
+
+          <div className="text-gray-400 text-xs sm:text-sm">Yearly</div>
+          <div className="flex items-center gap-2 text-sm flex-wrap">
+            <div className="text-white">₹{fmt(plan.prices.yearly)}</div>
+            <div className="text-[11px] text-gray-300">(₹{fmt(Math.round(plan.prices.yearly / 12))}/mo)</div>
+            <span className="ml-2 bg-[#ff1a1a] text-white text-[10px] px-2 py-0.5 rounded">Yearly – Save More 🔥</span>
+          </div>
+        </div>
+      </div>
 
       <div className="h-px bg-white/8 mb-6" />
 
       {/* Features */}
-      <ul className="flex-1 space-y-3 mb-8">
+      <ul className="flex-1 space-y-2 mb-6">
         {plan.features.map((f) => (
           <li key={f} className="flex items-start gap-3">
             <Check
               size={14}
               className={`flex-shrink-0 mt-0.5 ${plan.highlight ? 'text-[#ff1a1a]' : 'text-gray-500'}`}
             />
-            <span className="font-inter text-sm text-gray-300">{f}</span>
+            <span className="font-inter text-sm sm:text-sm text-gray-300">{f}</span>
           </li>
         ))}
       </ul>
@@ -112,14 +106,10 @@ function PlanCard({ plan, index }) {
       <motion.button
         id={`plan-${plan.id}-btn`}
         whileTap={{ scale: 0.96 }}
-        onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
-        className={`w-full py-4 font-bebas tracking-[0.25em] text-xl min-h-[52px] transition-all cursor-pointer
-          ${plan.highlight
-            ? 'btn-red-glow bg-[#ff1a1a] text-white hover:bg-[#cc0000]'
-            : 'border border-white/20 text-white hover:border-white/50 hover:bg-white/5'
-          }`}
+        onClick={() => window.dispatchEvent(new Event('openJoinModal'))}
+        className="btn-red-glow bg-[#ff1a1a] text-white font-barlow font-bold tracking-widest text-sm sm:text-sm px-4 py-3 sm:px-5 sm:py-2.5 uppercase cursor-pointer w-full"
       >
-        {plan.cta}
+        Join Now
       </motion.button>
     </motion.div>
   );
@@ -156,7 +146,7 @@ export default function Membership() {
         </motion.div>
 
         {/* Plans */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4 pt-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-4 pt-4">
           {plans.map((plan, i) => (
             <PlanCard key={plan.id} plan={plan} index={i} />
           ))}

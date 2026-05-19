@@ -10,11 +10,15 @@ import Trainers from './components/Trainers';
 import Membership from './components/Membership';
 import Impact from './components/Impact';
 import Contact from './components/Contact';
+import JoinForm from './components/JoinForm';
 import Footer from './components/Footer';
 import FloatingButtons from './components/FloatingButtons';
+import FirebaseAdminPanel from './components/FirebaseAdminPanel';
 
 function App() {
   const [loading, setLoading] = useState(true);
+  const [showAdmin, setShowAdmin] = useState(false);
+  const [showJoinForm, setShowJoinForm] = useState(false);
 
   useEffect(() => {
     // Show loading screen for 1.8 seconds to build anticipation
@@ -22,6 +26,25 @@ function App() {
       setLoading(false);
     }, 1800);
     return () => clearTimeout(timer);
+  }, []);
+
+  // Admin panel access with keyboard shortcut (Ctrl+Shift+A)
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+        e.preventDefault();
+        setShowAdmin(!showAdmin);
+      }
+    };
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [showAdmin]);
+
+  // Global listener so any component can open the Join modal by dispatching 'openJoinModal'
+  useEffect(() => {
+    const handler = () => setShowJoinForm(true);
+    window.addEventListener('openJoinModal', handler);
+    return () => window.removeEventListener('openJoinModal', handler);
   }, []);
 
   return (
@@ -36,7 +59,10 @@ function App() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <Navbar />
+            <Navbar 
+              onAdminClick={() => setShowAdmin(true)}
+              onJoinClick={() => setShowJoinForm(true)}
+            />
             <main>
               <Hero />
               <Programs />
@@ -48,6 +74,19 @@ function App() {
             </main>
             <Footer />
             <FloatingButtons />
+            
+            {/* Join Form Modal */}
+            <JoinForm 
+              isOpen={showJoinForm}
+              onClose={() => setShowJoinForm(false)}
+            />
+            
+            {/* Admin Panel */}
+            <AnimatePresence>
+              {showAdmin && (
+                <FirebaseAdminPanel onClose={() => setShowAdmin(false)} />
+              )}
+            </AnimatePresence>
           </motion.div>
         )}
       </AnimatePresence>
