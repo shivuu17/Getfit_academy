@@ -8,7 +8,7 @@ export function onAuthStateChanged(auth, callback) {
 }
 
 export async function signInWithEmailAndPassword() {
-  throw new Error('Firebase auth is not available in this workspace.');
+  throw new Error('Firebase SDK is missing. Run npm install (or npm install firebase) and restart the dev server.');
 }
 
 export async function signOut() {

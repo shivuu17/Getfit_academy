@@ -1,28 +1,29 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { Brain, Dumbbell, GraduationCap, Swords } from 'lucide-react';
 
 const pillars = [
   {
     id: 'training',
-    icon: '🥊',
+    icon: Swords,
     title: 'Real Fight Training',
     desc: 'Sparring, live drilling, and cage-tested techniques used by actual pro fighters.',
   },
   {
     id: 'coaches',
-    icon: '🧑‍🏫',
+    icon: GraduationCap,
     title: 'Pro Coaches',
     desc: 'Our trainers have competed at national and international level. Real fighters teach here.',
   },
   {
     id: 'conditioning',
-    icon: '💪',
+    icon: Dumbbell,
     title: 'Strength & Endurance',
     desc: 'Fight-specific conditioning — power, explosiveness, and an iron-clad cardio engine.',
   },
   {
     id: 'discipline',
-    icon: '🧠',
+    icon: Brain,
     title: 'Discipline & Focus',
     desc: 'Mental fortitude built through adversity. You leave tougher than you arrived.',
   },
@@ -41,8 +42,8 @@ function Pillar({ item, index }) {
       className="group flex gap-5 p-5 border border-white/5 bg-[#0d0d0d]
                  hover:border-[#ff1a1a]/30 hover:bg-[#111] transition-all duration-300"
     >
-      <div className="text-4xl flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform duration-300">
-        {item.icon}
+      <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border border-[#ff1a1a]/25 bg-[#ff1a1a]/10 text-[#ff1a1a] transition-transform duration-300 group-hover:scale-110">
+        <item.icon size={22} strokeWidth={2.2} />
       </div>
       <div>
         <h3 className="font-barlow font-bold tracking-wider text-lg text-white mb-1.5 uppercase">

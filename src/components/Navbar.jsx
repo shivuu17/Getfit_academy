@@ -68,6 +68,12 @@ export default function Navbar({ onAdminClick, onJoinClick }) {
             >
               Join Now
             </button>
+            <button
+              onClick={() => (window.location.href = '/admin')}
+              className="text-sm text-gray-400 hover:text-white hover:text-[#ff1a1a] uppercase tracking-widest px-3 py-2 border border-white/5 rounded cursor-pointer"
+            >
+              Admin
+            </button>
           </div>
 
           {/* Mobile hamburger */}

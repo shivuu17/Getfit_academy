@@ -8,14 +8,14 @@ const plans = [
     name: 'Male',
     desc: 'Standard adult male membership.',
     prices: { monthly: 4000, three: 9600, six: 16800, yearly: 24000 },
-    features: ['All classes access', 'Locker & shower', 'Community events'],
+    features: ['All classes access', 'Locker access', 'Community events'],
   },
   {
     id: 'female',
     name: 'Female',
     desc: 'Tailored programs for female athletes.',
     prices: { monthly: 3500, three: 8400, six: 14700, yearly: 21000 },
-    features: ['Women-only sessions', 'Locker & shower', 'Nutrition tips'],
+    features: ['Women-only sessions', 'Locker access', 'Nutrition tips'],
   },
   {
     id: 'couple',

@@ -1,10 +1,11 @@
 import { useRef, useState } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { Footprints, Swords, Trophy, Zap } from 'lucide-react';
 
 const programs = [
   {
     id: 'boxing',
-    icon: '🥊',
+    icon: Swords,
     title: 'BOXING',
     sub: 'Sweet Science',
     desc: 'Master jabs, hooks, footwork and ring IQ with championship-level coaching.',
@@ -13,7 +14,7 @@ const programs = [
   },
   {
     id: 'mma',
-    icon: '🏆',
+    icon: Trophy,
     title: 'MMA',
     sub: 'Mixed Martial Arts',
     desc: 'Complete fighting system combining striking, wrestling and ground game.',
@@ -22,7 +23,7 @@ const programs = [
   },
   {
     id: 'kickboxing',
-    icon: '🦵',
+    icon: Footprints,
     title: 'KICKBOXING',
     sub: 'Stand-Up Striking',
     desc: 'Explosive kicks, punches and combinations that condition your entire body.',
@@ -31,7 +32,7 @@ const programs = [
   },
   {
     id: 'street',
-    icon: '⚡',
+    icon: Zap,
     title: 'STREET COMBAT',
     sub: 'Self Defense',
     desc: 'Real-world situational fighting techniques for when it matters most.',
@@ -78,7 +79,9 @@ function ProgramCard({ prog, index, onClick }) {
       )}
 
       <div className="flex items-start gap-4">
-        <div className="text-4xl flex-shrink-0 mt-1">{prog.icon}</div>
+        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border border-[#ff1a1a]/20 bg-[#ff1a1a]/10 text-[#ff1a1a] mt-1">
+          <prog.icon size={24} strokeWidth={2.2} />
+        </div>
         <div className="flex-1">
           <div className="font-barlow font-semibold text-[10px] tracking-[0.3em] text-[#ff1a1a] uppercase mb-1">
             {prog.sub}
@@ -166,7 +169,9 @@ export default function Programs() {
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
               </button>
               
-              <div className="text-5xl mb-4">{selectedProg.icon}</div>
+              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-[#ff1a1a]/25 bg-[#ff1a1a]/10 text-[#ff1a1a]">
+                <selectedProg.icon size={28} strokeWidth={2.2} />
+              </div>
               <div className="font-barlow font-semibold text-[10px] tracking-[0.3em] text-[#ff1a1a] uppercase mb-1">
                 {selectedProg.sub}
               </div>

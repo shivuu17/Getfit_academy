@@ -10,6 +10,13 @@ export async function getDocs() {
   return { docs: [], size: 0 };
 }
 
+export async function getDoc() {
+  return {
+    data: () => ({}),
+    exists: () => false,
+  };
+}
+
 export function doc(db, collectionName, id) {
   return { db, collectionName, id };
 }

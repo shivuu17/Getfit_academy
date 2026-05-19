@@ -1,20 +1,42 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Users collection - only authenticated admins can access
-    match /users/{document=**} {
-      allow read, write: if request.auth != null && request.auth.uid in get(/databases/$(database)/documents/admins/allowed).data.uids;
+    function isBootstrapAdmin() {
+      return request.auth != null && request.auth.token.email == 'katiyarshivank927@gmail.com';
+    }
+
+    function isAdmin() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/admins/allowed)
+        && request.auth.token.email in get(/databases/$(database)/documents/admins/allowed).data.emails;
+    }
+
+    // Users collection - anyone can create a join request, only admins can manage records
+    match /users/{document} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
     }
     
-    // Pricing collection - only authenticated admins can write
+    // Members collection - admin-managed member records (used by admin panel)
+      match /members/{document} {
+        allow read, create, update, delete: if isAdmin();
+    }
+    
+    // Payments collection - admin-managed payment history
+      match /payments/{document} {
+        allow read, create, update, delete: if isAdmin();
+    }
+    
+    // Pricing collection - only authorized admin emails can write
     match /pricing/{document=**} {
       allow read: if true;
-      allow write: if request.auth != null && request.auth.uid in get(/databases/$(database)/documents/admins/allowed).data.uids;
+      allow write: if isAdmin();
     }
     
-    // Admins collection - only admins can access
-    match /admins/{document=**} {
-      allow read, write: if request.auth != null && request.auth.uid in get(/databases/$(database)/documents/admins/allowed).data.uids;
+    // Admin allowlist - signed-in users can read, only admins can write
+    match /admins/allowed {
+      allow read: if request.auth != null;
+      allow write: if isAdmin() || isBootstrapAdmin();
     }
   }
 }

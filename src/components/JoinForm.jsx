@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, AlertCircle, X } from 'lucide-react';
 import { collection, addDoc } from 'firebase/firestore';
@@ -8,6 +8,15 @@ export default function JoinForm({ isOpen, onClose }) {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setShowTerms(false);
+      setTermsAccepted(false);
+    }
+  }, [isOpen]);
 
   const [form, setForm] = useState({
     // Basic Info
@@ -32,6 +41,76 @@ export default function JoinForm({ isOpen, onClose }) {
     // Agreement
     agreeTerms: false,
   });
+
+  const termsSections = [
+    {
+      title: '1. Membership Policy',
+      points: [
+        'Membership is non-transferable and non-refundable.',
+        'Fees once paid will not be refunded under any circumstances.',
+        'Membership is valid only for the selected duration.',
+      ],
+    },
+    {
+      title: '2. Health & Responsibility',
+      points: [
+        'Members must ensure they are physically fit before joining.',
+        'The academy is not responsible for any injury, accident, or health issue during training.',
+        'Members with medical conditions must inform the trainer in advance.',
+      ],
+    },
+    {
+      title: '3. Discipline & Rules',
+      points: [
+        'Proper discipline and behavior must be maintained.',
+        'Any misconduct or violation may lead to cancellation of membership.',
+        'Follow trainer instructions strictly during sessions.',
+      ],
+    },
+    {
+      title: '4. Timing & Attendance',
+      points: [
+        'Members must attend sessions within their selected time slot.',
+        'Management may adjust batch timing if required.',
+      ],
+    },
+    {
+      title: '5. Payments',
+      points: [
+        'Fees must be paid on time.',
+        'Late payment may result in suspension of access.',
+      ],
+    },
+    {
+      title: '6. Personal Belongings',
+      points: [
+        'The academy is not responsible for loss or damage of personal items.',
+        'Avoid bringing valuables.',
+      ],
+    },
+    {
+      title: '7. Cancellation Policy',
+      points: [
+        'Academy reserves the right to terminate membership in case of rule violation.',
+        'No refund will be provided after cancellation.',
+      ],
+    },
+    {
+      title: '8. Media Consent',
+      points: [
+        'The academy may use photos/videos of members for promotional purposes.',
+        'If you do not agree, inform management in writing.',
+      ],
+    },
+    {
+      title: '9. Agreement',
+      points: [
+        'Agree to all terms and conditions.',
+        'Accept risks involved in physical training.',
+        'Commit to following academy rules.',
+      ],
+    },
+  ];
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -93,26 +172,6 @@ export default function JoinForm({ isOpen, onClose }) {
         status: 'pending'
       };
       await addDoc(collection(db, 'users'), newUser);
-
-      // Send WhatsApp message
-      const dob = new Date(form.dateOfBirth);
-      const sessionDate = form.preferredDate ? new Date(form.preferredDate).toLocaleDateString() : 'Not specified';
-      const msg = encodeURIComponent(
-        `Hi! I'm ${form.fullName}. I want to join Getfit Academy!\n\n` +
-        `📋 Details:\n` +
-        `Name: ${form.fullName}\n` +
-        `Phone: ${form.phone}\n` +
-        `Gender: ${form.gender}\n` +
-        `DOB: ${dob.toLocaleDateString()}\n` +
-        `Package: ${form.packageDuration}\n` +
-        `Category: ${form.category}\n` +
-        `Training: ${form.trainingType}\n` +
-        `Preferred Time: ${form.preferredTime}\n` +
-        `Preferred Date: ${sessionDate}\n` +
-        `Preferred Session Time: ${form.preferredSessionTime || 'Not specified'}\n` +
-        `Payment: ${form.paymentMode}`
-      );
-      window.open(`https://wa.me/918506889718?text=${msg}`, '_blank');
 
       setSubmitted(true);
       setTimeout(() => {
@@ -206,16 +265,8 @@ export default function JoinForm({ isOpen, onClose }) {
                     transition={{ delay: 0.3 }}
                     className="text-gray-300 text-sm md:text-base font-inter max-w-sm mx-auto leading-relaxed"
                   >
-                    We have received your registration. Our team will contact you shortly with more details about your first session.
+                    Thank you for choosing us. Our team will contact you shortly with details about your first session.
                   </motion.p>
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.5 }}
-                    className="mt-8 text-[#ff1a1a] text-sm font-barlow tracking-wider"
-                  >
-                    ✓ Check your WhatsApp for confirmation
-                  </motion.div>
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8">
@@ -492,19 +543,37 @@ export default function JoinForm({ isOpen, onClose }) {
                         type="checkbox"
                         name="agreeTerms"
                         checked={form.agreeTerms}
-                        onChange={handleInputChange}
-                        className="w-5 h-5 accent-[#ff1a1a] cursor-pointer mt-0.5 flex-shrink-0"
+                        disabled={!termsAccepted}
+                        onChange={(e) => {
+                          setForm(prev => ({
+                            ...prev,
+                            agreeTerms: e.target.checked,
+                          }));
+                        }}
+                        className="w-5 h-5 accent-[#ff1a1a] cursor-pointer mt-0.5 flex-shrink-0 disabled:cursor-not-allowed disabled:opacity-50"
                       />
-                      <span className="text-sm text-gray-300">
+                      <span className="text-sm text-gray-300 leading-relaxed">
                         I agree to Getfit Academy rules and terms & conditions
+                        <button
+                          type="button"
+                          onClick={() => setShowTerms(true)}
+                          className="ml-2 text-[#ff1a1a] hover:text-white underline underline-offset-4 transition-colors"
+                        >
+                          Read terms
+                        </button>
                       </span>
                     </label>
+                    {!termsAccepted && (
+                      <p className="mt-2 text-xs text-yellow-400">
+                        Read and accept the terms above to enable the checkbox.
+                      </p>
+                    )}
                   </div>
 
                   {/* Submit Button */}
                   <motion.button
                     type="submit"
-                    disabled={loading}
+                    disabled={loading || !form.agreeTerms}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     className="w-full btn-red-glow bg-[#ff1a1a] text-white font-barlow font-bold tracking-widest text-sm px-4 md:px-5 py-3 md:py-4 uppercase disabled:opacity-50 disabled:cursor-not-allowed transition-all mt-6 md:mt-8"
@@ -514,6 +583,84 @@ export default function JoinForm({ isOpen, onClose }) {
                 </form>
               )}
             </div>
+
+            <AnimatePresence>
+              {showTerms && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 z-[60] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4"
+                  onClick={() => setShowTerms(false)}
+                >
+                  <motion.div
+                    initial={{ scale: 0.96, opacity: 0, y: 16 }}
+                    animate={{ scale: 1, opacity: 1, y: 0 }}
+                    exit={{ scale: 0.96, opacity: 0, y: 16 }}
+                    transition={{ duration: 0.22 }}
+                    onClick={e => e.stopPropagation()}
+                    className="w-full max-w-3xl max-h-[90vh] overflow-hidden bg-[#0d0d0d] border border-white/10 rounded-lg flex flex-col"
+                  >
+                    <div className="sticky top-0 bg-[#111] border-b border-white/5 px-4 md:px-6 py-4 flex items-center justify-between">
+                      <div>
+                        <h3 className="font-bebas text-xl md:text-2xl tracking-wider text-white">GETFIT ACADEMY - TERMS & CONDITIONS</h3>
+                        <p className="text-xs md:text-sm text-gray-400 mt-1">Please review the rules before accepting the agreement.</p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowTerms(false)}
+                        className="text-gray-400 hover:text-white transition-colors p-1"
+                        aria-label="Close terms"
+                      >
+                        <X size={24} />
+                      </button>
+                    </div>
+
+                    <div className="p-4 md:p-6 overflow-y-auto space-y-5 text-sm md:text-base text-gray-200 leading-relaxed">
+                      {termsSections.map(section => (
+                        <section key={section.title} className="space-y-2">
+                          <h4 className="font-bebas text-lg md:text-xl tracking-wider text-white">{section.title}</h4>
+                          <ul className="space-y-2 list-disc pl-5 text-gray-300">
+                            {section.points.map(point => (
+                              <li key={point}>{point}</li>
+                            ))}
+                          </ul>
+                        </section>
+                      ))}
+                    </div>
+
+                    <div className="border-t border-white/5 bg-[#111] p-4 md:p-6 flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
+                      <p className="text-xs md:text-sm text-gray-400">
+                        By accepting, you confirm that you have read and understood the academy rules.
+                      </p>
+                      <div className="flex gap-3">
+                        <button
+                          type="button"
+                          onClick={() => setShowTerms(false)}
+                          className="px-4 py-2 text-sm font-barlow font-semibold tracking-widest uppercase border border-white/10 text-gray-300 hover:text-white hover:border-white/20 transition-colors"
+                        >
+                          Close
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setTermsAccepted(true);
+                            setForm(prev => ({
+                              ...prev,
+                              agreeTerms: true,
+                            }));
+                            setShowTerms(false);
+                          }}
+                          className="px-4 py-2 text-sm font-barlow font-bold tracking-widest uppercase bg-[#ff1a1a] text-white hover:brightness-110 transition-colors"
+                        >
+                          I Accept
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         </motion.div>
       )}

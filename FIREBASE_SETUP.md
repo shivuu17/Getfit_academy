@@ -54,30 +54,32 @@ This guide will help you deploy your Getfit Academy website to Firebase Hosting 
 2. Click "Add user"
 3. Enter an email and password for your admin account
 4. Click "Add user"
-5. Copy the User UID of the created user
+5. Copy the email address of the created user
 
 ## Step 5: Set Up Firestore Security Rules
 
 1. Go to "Firestore Database" → "Rules"
 2. Replace the rules with the content from `firestore.rules` file in your project
-3. In the security rules, you'll need to create an admins collection with your user UID
+3. In the security rules, the admin allowlist is checked against the signed-in user's email address
 4. Click "Publish"
+
+If you want a different first admin email, update `VITE_BOOTSTRAP_ADMIN_EMAIL` in your `.env` file before opening the admin panel for the first time.
 
 ## Step 6: Create Admin Configuration in Firestore
 
 1. Go to "Firestore Database" → "Data"
 2. Create a new collection named "admins"
 3. Create a document named "allowed"
-4. Add a field named "uids" with type "Array"
-5. Add your admin user UID to the array
+4. Add a field named "emails" with type "Array"
+5. Add your admin email address to the array
 6. Save
 
 Example structure:
 ```
 Collection: admins
   Document: allowed
-    Field: uids (Array)
-      - [your_admin_user_uid]
+    Field: emails (Array)
+      - [your_admin_email]
 ```
 
 ## Step 7: Configure Environment Variables
@@ -159,9 +161,9 @@ After deployment, you'll get a Firebase Hosting URL. Your application will be li
 ### Access Admin Panel
 
 The admin panel is now secured with Firebase Authentication:
-- Desktop: Use keyboard shortcut `Ctrl+Shift+A` to open the admin login
-- You'll be prompted to login with your Firebase admin credentials
-- After login, you can manage users and pricing
+- Desktop: Use keyboard shortcut `Ctrl+Shift+A` to open the admin access modal
+- Sign in with an approved Firebase Auth email/password account
+- Only emails listed in `admins/allowed` can open the admin panel
 
 ## Usage
 
@@ -195,7 +197,7 @@ Solution: Run `npm install`
 Solution: Make sure your `.env` file has all Firebase credentials filled in
 
 ### "Authentication/authorization failed"
-Solution: Check Firestore security rules and make sure your admin UID is in the admins/allowed document
+Solution: Check Firestore security rules and make sure your admin email is in the admins/allowed document
 
 ### Deploy not working
 Solution: 
@@ -231,7 +233,7 @@ Firestore Database:
 │
 └── admins (collection)
     └── allowed (document)
-        └── uids (array of admin UIDs)
+    └── emails (array of admin emails)
 ```
 
 ## Security Notes

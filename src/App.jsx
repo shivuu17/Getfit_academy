@@ -29,16 +29,7 @@ function App() {
   }, []);
 
   // Admin panel access with keyboard shortcut (Ctrl+Shift+A)
-  useEffect(() => {
-    const handleKeyPress = (e) => {
-      if (e.ctrlKey && e.shiftKey && e.key === 'A') {
-        e.preventDefault();
-        setShowAdmin(!showAdmin);
-      }
-    };
-    window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [showAdmin]);
+  // Admin panel is now a separate route at `/admin` — no global keyboard shortcut
 
   // Global listener so any component can open the Join modal by dispatching 'openJoinModal'
   useEffect(() => {
@@ -59,10 +50,7 @@ function App() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <Navbar 
-              onAdminClick={() => setShowAdmin(true)}
-              onJoinClick={() => setShowJoinForm(true)}
-            />
+            <Navbar onJoinClick={() => setShowJoinForm(true)} />
             <main>
               <Hero />
               <Programs />
@@ -81,12 +69,10 @@ function App() {
               onClose={() => setShowJoinForm(false)}
             />
             
-            {/* Admin Panel */}
-            <AnimatePresence>
-              {showAdmin && (
-                <FirebaseAdminPanel onClose={() => setShowAdmin(false)} />
-              )}
-            </AnimatePresence>
+            {/* Admin Panel route: render only on /admin path */}
+            {window.location.pathname.startsWith('/admin') && (
+              <FirebaseAdminPanel onClose={() => (window.location.href = '/')} />
+            )}
           </motion.div>
         )}
       </AnimatePresence>

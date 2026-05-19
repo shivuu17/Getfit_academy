@@ -1,3 +1,5 @@
+import { Dumbbell } from 'lucide-react';
+
 // Social icons are inline SVGs (lucide-react v1 has no brand icons)
 
 // Custom inline SVGs for brand icons (lucide-react v1 has no brand icons)
@@ -118,7 +120,18 @@ export default function Footer() {
         {/* Bottom */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-gray-600 font-inter">
           <span>© 2025 Getfit Academy. All rights reserved.</span>
-          <span>Built with 🥊 in Noida</span>
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-1.5">
+              Built with <Dumbbell size={12} className="text-[#ff1a1a]" /> in Noida
+            </span>
+            <button
+              onClick={() => (window.location.href = '/admin')}
+              className="text-gray-400 hover:text-white text-xs uppercase tracking-widest px-2 py-1 border border-white/5 rounded"
+              aria-label="Open admin panel"
+            >
+              Admin
+            </button>
+          </div>
         </div>
       </div>
     </footer>
