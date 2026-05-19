@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, AlertCircle, X } from 'lucide-react';
 import { collection, addDoc } from 'firebase/firestore';
-import { db } from '../config/firebase';
+import { db, isFirebaseConfigured } from '../config/firebase';
 
 export default function JoinForm({ isOpen, onClose }) {
   const [submitted, setSubmitted] = useState(false);
@@ -73,6 +73,11 @@ export default function JoinForm({ isOpen, onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    if (!db) {
+      setError('Firebase is not configured. Add the VITE_FIREBASE_* values to a .env file before submitting.');
+      return;
+    }
 
     if (!validateForm()) {
       return;
@@ -167,6 +172,12 @@ export default function JoinForm({ isOpen, onClose }) {
 
             {/* Content */}
             <div className="p-4 md:p-8">
+              {!isFirebaseConfigured && (
+                <div className="mb-6 p-3 md:p-4 bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 rounded text-sm">
+                  Firebase is not configured yet. The form can be opened, but submissions need a .env file with VITE_FIREBASE_* values.
+                </div>
+              )}
+
               {submitted ? (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}

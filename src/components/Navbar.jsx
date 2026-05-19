@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Settings } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import logoImg from '../assets/logo.webp';
 
 const links = [
@@ -68,29 +68,6 @@ export default function Navbar({ onAdminClick, onJoinClick }) {
             >
               Join Now
             </button>
-            
-            {/* Admin Button */}
-            <motion.button
-              onClick={onAdminClick}
-              onMouseEnter={() => setShowAdminHint(true)}
-              onMouseLeave={() => setShowAdminHint(false)}
-              className="relative p-2 text-gray-400 hover:text-white transition-colors"
-              title="Admin Panel (Ctrl+Shift+A)"
-            >
-              <Settings size={20} />
-              <AnimatePresence>
-                {showAdminHint && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 5 }}
-                    className="absolute top-full mt-2 right-0 bg-[#1a1a1a] border border-white/20 text-xs text-gray-300 px-3 py-1 rounded whitespace-nowrap"
-                  >
-                    Ctrl+Shift+A
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.button>
           </div>
 
           {/* Mobile hamburger */}

@@ -14,16 +14,30 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const isFirebaseConfigured = Object.values(firebaseConfig).every(
+  value => typeof value === 'string' && value.trim() !== ''
+);
 
-// Initialize Firebase Authentication and get a reference to the service
-export const auth = getAuth(app);
+// Initialize Firebase only when the required environment variables are present.
+// This keeps the app from crashing during module load in environments without Firebase setup.
+let app = null;
+let auth = null;
+let db = null;
+let storage = null;
 
-// Initialize Cloud Firestore and get a reference to the service
-export const db = getFirestore(app);
+if (isFirebaseConfigured) {
+  app = initializeApp(firebaseConfig);
 
-// Initialize Cloud Storage and get a reference to the service
-export const storage = getStorage(app);
+  // Initialize Firebase Authentication and get a reference to the service
+  auth = getAuth(app);
+
+  // Initialize Cloud Firestore and get a reference to the service
+  db = getFirestore(app);
+
+  // Initialize Cloud Storage and get a reference to the service
+  storage = getStorage(app);
+}
+
+export { auth, db, storage, isFirebaseConfigured };
 
 export default app;

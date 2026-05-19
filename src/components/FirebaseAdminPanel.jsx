@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Trash2, Eye, Edit2, LogOut, Users, DollarSign, Mail, Lock } from 'lucide-react';
-import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
 import { collection, getDocs, updateDoc, deleteDoc, doc, setDoc } from 'firebase/firestore';
-import { auth, db } from '../config/firebase';
+import { auth, db, isFirebaseConfigured } from '../config/firebase';
 
 export default function FirebaseAdminPanel({ onClose }) {
   const [tab, setTab] = useState('users');
@@ -28,7 +28,12 @@ export default function FirebaseAdminPanel({ onClose }) {
 
   // Check if user is logged in
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
+    if (!auth) {
+      setIsAuthenticated(false);
+      return undefined;
+    }
+
+    const unsubscribe = onAuthStateChanged(auth, user => {
       setIsAuthenticated(!!user);
       if (user) {
         loadUsersAndPricing();
@@ -39,6 +44,10 @@ export default function FirebaseAdminPanel({ onClose }) {
 
   // Load users and pricing from Firestore
   const loadUsersAndPricing = async () => {
+    if (!db) {
+      return;
+    }
+
     try {
       // Load users
       const usersCollection = collection(db, 'users');
@@ -65,6 +74,12 @@ export default function FirebaseAdminPanel({ onClose }) {
     setIsLoggingIn(true);
     setLoginError('');
 
+    if (!auth) {
+      setLoginError('Firebase is not configured. Set the VITE_FIREBASE_* environment variables first.');
+      setIsLoggingIn(false);
+      return;
+    }
+
     try {
       await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
       setLoginEmail('');
@@ -78,6 +93,11 @@ export default function FirebaseAdminPanel({ onClose }) {
 
   // Handle logout
   const handleLogout = async () => {
+    if (!auth) {
+      onClose();
+      return;
+    }
+
     try {
       await signOut(auth);
       setIsAuthenticated(false);
@@ -89,6 +109,10 @@ export default function FirebaseAdminPanel({ onClose }) {
 
   // Handle user status update
   const handleStatusUpdate = async (userId, newStatus) => {
+    if (!db) {
+      return;
+    }
+
     try {
       const userRef = doc(db, 'users', userId);
       await updateDoc(userRef, { status: newStatus });
@@ -101,6 +125,10 @@ export default function FirebaseAdminPanel({ onClose }) {
 
   // Handle user deletion
   const handleDeleteUser = async (userId) => {
+    if (!db) {
+      return;
+    }
+
     if (window.confirm('Are you sure you want to delete this user?')) {
       try {
         await deleteDoc(doc(db, 'users', userId));
@@ -122,6 +150,10 @@ export default function FirebaseAdminPanel({ onClose }) {
 
   // Save pricing to Firestore
   const handleSavePricing = async () => {
+    if (!db) {
+      return;
+    }
+
     setIsSavingPricing(true);
     try {
       const pricingRef = doc(db, 'pricing', 'default');
@@ -188,6 +220,12 @@ export default function FirebaseAdminPanel({ onClose }) {
 
           {/* Login Form */}
           <form onSubmit={handleLogin} className="p-6 space-y-4">
+            {!isFirebaseConfigured && (
+              <div className="p-3 bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 text-sm rounded">
+                Firebase is not configured yet. Add the VITE_FIREBASE_* values to a .env file to enable admin login.
+              </div>
+            )}
+
             <div>
               <label className="block text-sm font-barlow text-gray-400 mb-2">Email Address</label>
               <div className="relative">
